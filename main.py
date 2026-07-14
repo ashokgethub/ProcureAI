@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from vendors import VendorsPage
 
 
 # -----------------------------
@@ -173,10 +174,11 @@ class ProcureAI(ctk.CTk):
 
     def show_vendors(self):
         self.clear_page()
-        ModulePage(
-            self.main,
-            "🏢 Vendor Management"
-        ).pack(fill="both", expand=True)
+
+        VendorsPage(self.main).pack(
+            fill="both",
+            expand=True
+        )
 
 
     def show_rfqs(self):
