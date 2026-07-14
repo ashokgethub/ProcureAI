@@ -1,5 +1,5 @@
 import sqlite3
-from app.services.database import DB_PATH
+from app.service.database import DB_PATH
 
 
 def get_connection():

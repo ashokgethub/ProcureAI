@@ -1,3 +1,4 @@
+from app.service.database import create_database
 import customtkinter as ctk
 from vendors import VendorsPage
 
@@ -255,5 +256,7 @@ class ProcureAI(ctk.CTk):
 
 
 # Run App
+create_database()
+
 app = ProcureAI()
 app.mainloop()
