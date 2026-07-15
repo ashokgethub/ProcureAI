@@ -22,15 +22,19 @@ class BOMPage(ctk.CTkFrame):
 
         self.table = ttk.Treeview(
             self,
-            columns=("MPN", "Qty"),
+            columns=("MPN", "Qty", "Unit Price", "Total"),
             show="headings"
         )
 
         self.table.heading("MPN", text="MPN")
         self.table.heading("Qty", text="Quantity")
+        self.table.heading("Unit Price", text="Unit Price")
+        self.table.heading("Total", text="Total")
 
-        self.table.column("MPN", width=400)
-        self.table.column("Qty", width=120)
+        self.table.column("MPN", width=350)
+        self.table.column("Qty", width=100)
+        self.table.column("Unit Price", width=120)
+        self.table.column("Total", width=120)
 
         self.table.pack(
             fill="both",
