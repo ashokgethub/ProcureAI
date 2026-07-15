@@ -43,6 +43,13 @@ class BOMPage(ctk.CTkFrame):
             pady=20
         )
 
+        self.total_label = ctk.CTkLabel(
+            self,
+            text="Grand Total: ₹0",
+            font=("Arial", 18, "bold")
+        )
+
+        self.total_label.pack(pady=10)
     def import_bom(self):
 
         file = filedialog.askopenfilename(
@@ -64,13 +71,41 @@ class BOMPage(ctk.CTkFrame):
             mpn = row[0]
             qty = row[1]
 
+            if qty is None:
+                qty = 0
+
+            unit_price = 0
+            total = qty * unit_price
+
             self.table.insert(
                 "",
                 "end",
-                values=(mpn, qty)
+                values=(
+                    mpn,
+                    qty,
+                    unit_price,
+                    total
+                )
             )
+
+        self.calculate_total()            
 
         messagebox.showinfo(
             "Success",
             "BOM Imported Successfully"
+        )
+
+    def calculate_total(self):
+
+        grand_total = 0
+
+        for row in self.table.get_children():
+
+            values = self.table.item(row)["values"]
+
+            if len(values) >= 4:
+                grand_total += float(values[3])
+
+        self.total_label.configure(
+            text=f"Grand Total: ₹{grand_total:,.2f}"
         )
