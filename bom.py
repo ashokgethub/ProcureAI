@@ -125,7 +125,22 @@ class BOMPage(ctk.CTkFrame):
 
         values = self.table.item(selected)["values"]
 
-        messagebox.showinfo(
-            "Selected Part",
-            f"MPN: {values[0]}\nCurrent Price: {values[2]}"
+        price_window = ctk.CTkToplevel(self)
+        price_window.title("Edit Unit Price")
+        price_window.geometry("300x180")
+
+        ctk.CTkLabel(
+            price_window,
+            text=f"MPN:\n{values[0]}"
+        ).pack(pady=10)
+
+        price_entry = ctk.CTkEntry(
+            price_window,
+            width=150
         )
+        price_entry.pack(pady=10)
+
+        ctk.CTkButton(
+            price_window,
+            text="Save"
+        ).pack(pady=10)
