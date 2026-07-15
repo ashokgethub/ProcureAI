@@ -1,6 +1,7 @@
 from app.service.database import create_database
 import customtkinter as ctk
 from vendors import VendorsPage
+from bom import BOMPage
 
 
 # -----------------------------
@@ -224,10 +225,11 @@ class ProcureAI(ctk.CTk):
 
     def show_bom(self):
         self.clear_page()
-        ModulePage(
-            self.main,
-            "📦 BOM Manager"
-        ).pack(fill="both", expand=True)
+
+        BOMPage(self.main).pack(
+            fill="both",
+            expand=True
+        )
 
 
     def show_reports(self):
