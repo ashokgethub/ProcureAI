@@ -8,18 +8,21 @@ class BOMPage(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
 
+        # Title
         ctk.CTkLabel(
             self,
             text="📦 BOM Manager",
             font=("Arial", 30, "bold")
         ).pack(pady=20)
 
+        # Import Button
         ctk.CTkButton(
             self,
             text="📂 Import Excel BOM",
             command=self.import_bom
         ).pack(pady=10)
 
+        # Table
         self.table = ttk.Treeview(
             self,
             columns=("MPN", "Qty", "Unit Price", "Total"),
@@ -43,13 +46,17 @@ class BOMPage(ctk.CTkFrame):
             pady=20
         )
 
+        # Double-click event
+        self.table.bind("<Double-1>", self.edit_price)
+
+        # Grand Total
         self.total_label = ctk.CTkLabel(
             self,
-            text="Grand Total: ₹0",
+            text="Grand Total: ₹0.00",
             font=("Arial", 18, "bold")
         )
-
         self.total_label.pack(pady=10)
+
     def import_bom(self):
 
         file = filedialog.askopenfilename(
@@ -60,21 +67,21 @@ class BOMPage(ctk.CTkFrame):
             return
 
         workbook = openpyxl.load_workbook(file)
-
         sheet = workbook.active
 
+        # Clear old rows
         for row in self.table.get_children():
             self.table.delete(row)
 
+        # Add new rows
         for row in sheet.iter_rows(min_row=2, values_only=True):
 
             mpn = row[0]
-            qty = row[1]
 
-            if qty is None:
-                qty = 0
+            qty = row[1] if row[1] else 0
 
             unit_price = 0
+
             total = qty * unit_price
 
             self.table.insert(
@@ -88,7 +95,7 @@ class BOMPage(ctk.CTkFrame):
                 )
             )
 
-        self.calculate_total()            
+        self.calculate_total()
 
         messagebox.showinfo(
             "Success",
@@ -103,9 +110,22 @@ class BOMPage(ctk.CTkFrame):
 
             values = self.table.item(row)["values"]
 
-            if len(values) >= 4:
-                grand_total += float(values[3])
+            grand_total += float(values[3])
 
         self.total_label.configure(
             text=f"Grand Total: ₹{grand_total:,.2f}"
+        )
+
+    def edit_price(self, event):
+
+        selected = self.table.focus()
+
+        if not selected:
+            return
+
+        values = self.table.item(selected)["values"]
+
+        messagebox.showinfo(
+            "Selected Part",
+            f"MPN: {values[0]}\nCurrent Price: {values[2]}"
         )
